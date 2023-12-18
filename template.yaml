@@ -9,6 +9,7 @@ Resources:
             EnableDnsSupport: true
             EnableDnsHostnames: true
             InstanceTenancy: default
+
     PublicSubnetA:
         Type: AWS::EC2::Subnet
         Properties:
@@ -34,4 +35,46 @@ Resources:
             CidrBlock: 10.0.3.0/24
             VpcId: !Ref VPC
 
-        
+    InternetGateway:
+        Type: AWS::EC2::InternetGateway
+    InternetGatewayAttachment:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            InternetGatewayId: !Ref InternetGateway
+            VpcId: !Ref VPC
+    
+    PublicRouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref VPC
+    PrivateRouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref VPC
+    PublicRoute:
+        Type: AWS::EC2::Route
+        Properties:
+            RouteTableId: !Ref PublicRouteTable
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref InternetGateway
+ 
+    RouteTableAssociationForPublicSubnetA:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref PublicSubnetA
+            RouteTableId: !Ref PublicRouteTable
+    RouteTableAssociationForPublicSubnetC:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref PublicSubnetC
+            RouteTableId: !Ref PublicRouteTable
+    RouteTableAssociationForPrivateSubnetA:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref PrivateSubnetA
+            RouteTableId: !Ref PrivateRouteTable
+    RouteTableAssociationForPrivateSubnetC:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref PrivateSubnetC
+            RouteTableId: !Ref PrivateRouteTable
