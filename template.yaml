@@ -9,3 +9,29 @@ Resources:
             EnableDnsSupport: true
             EnableDnsHostnames: true
             InstanceTenancy: default
+    PublicSubnetA:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1a
+            CidrBlock: 10.0.0.0/24
+            VpcId: !Ref VPC
+    PublicSubnetC:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1c
+            CidrBlock: 10.0.1.0/24
+            VpcId: !Ref VPC
+    PrivateSubnetA:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1a
+            CidrBlock: 10.0.2.0/24
+            VpcId: !Ref VPC
+    PrivateSubnetC:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1c
+            CidrBlock: 10.0.3.0/24
+            VpcId: !Ref VPC
+
+        
